@@ -1,12 +1,43 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Navigation } from "@/components/layout/Navigation";
+import { SystemOverview } from "@/components/overview/SystemOverview";
+import { FacultyDashboard } from "@/components/faculty/FacultyDashboard";
+import { StudentInterface } from "@/components/student/StudentInterface";
+import { AnalyticsDashboard } from "@/components/analytics/AnalyticsDashboard";
+import { QRGenerator } from "@/components/qr/QRGenerator";
+import { MLVerificationDemo } from "@/components/ml/MLVerificationDemo";
+import { AdminPanel } from "@/components/admin/AdminPanel";
 
 const Index = () => {
+  const [activeView, setActiveView] = useState("overview");
+
+  const renderView = () => {
+    switch (activeView) {
+      case "overview":
+        return <SystemOverview onViewChange={setActiveView} />;
+      case "faculty":
+        return <FacultyDashboard />;
+      case "student":
+        return <StudentInterface />;
+      case "analytics":
+        return <AnalyticsDashboard />;
+      case "qr-generator":
+        return <QRGenerator />;
+      case "ml-demo":
+        return <MLVerificationDemo />;
+      case "admin":
+        return <AdminPanel />;
+      default:
+        return <SystemOverview onViewChange={setActiveView} />;
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navigation activeView={activeView} onViewChange={setActiveView} />
+      <main className="min-h-[calc(100vh-4rem)]">
+        {renderView()}
+      </main>
     </div>
   );
 };
